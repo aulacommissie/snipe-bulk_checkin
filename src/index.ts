@@ -15,7 +15,7 @@ async function asyncFunction() {
 	console.clear();
 	console.log(
 		chalk.magenta(
-			figlet.textSync("Snipe\nBulk Checkin", { horizontalLayout: "default" })
+			figlet.textSync("Snipe-IT\nBulk Checkin", { horizontalLayout: "default" })
 		)
 	);
 

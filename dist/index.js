@@ -18,7 +18,7 @@ const spinner = ora_1.default({
 });
 async function asyncFunction() {
     console.clear();
-    console.log(chalk_1.default.magenta(figlet_1.default.textSync("Snipe\nBulk Checkin", { horizontalLayout: "default" })));
+    console.log(chalk_1.default.magenta(figlet_1.default.textSync("Snipe-IT\nBulk Checkin", { horizontalLayout: "default" })));
     if (!conf.get("snipeURL")) {
         await prompts_1.default([
             {
