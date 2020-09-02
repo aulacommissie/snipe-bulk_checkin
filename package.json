@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/stingalleman/snipe-bulk_checkin#readme",
   "dependencies": {
+    "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "ora": "^5.0.0",
     "prompts": "^2.3.2",
