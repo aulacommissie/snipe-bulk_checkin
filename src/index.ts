@@ -3,11 +3,20 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import prompts from "prompts";
+
+import ora from "ora";
+const spinner = ora({
+	color: "blue",
+	spinner: "bouncingBall",
+	text: "Loading..."
+});
+
 import { Snipe } from "snipe-it.js";
 
 const snipe = new Snipe(process.env.SNIPE_URL, process.env.SNIPE_TOKEN);
 
 async function asyncFunction() {
+	spinner.start("Fetching resources from Snipe-IT...");
 	// fetch assets
 	const assets = await snipe.hardware.get({ limit: 10000 });
 	// fetch status labels
@@ -40,6 +49,8 @@ async function asyncFunction() {
 	let locationID: any;
 	let note: string;
 
+	spinner.stop();
+
 	await prompts([
 		{
 			type: "autocomplete",
@@ -59,6 +70,7 @@ async function asyncFunction() {
 	let x: boolean;
 	x = true;
 	while (x) {
+		spinner.stop();
 		await prompts([
 			{
 				type: "autocomplete",
@@ -72,8 +84,13 @@ async function asyncFunction() {
 				x = false;
 			} else {
 				console.log(`locationID: ${locationID}, assetID: ${value.AssetID}`);
-				if (locationID === "none") await snipe.hardware.checkin(value.AssetID, note).then((result) => console.log(result));
-				await snipe.hardware.checkin(value.AssetID, note, locationID).then((result) => console.log(result));
+				if (locationID === "none") {
+					const res = await snipe.hardware.checkin(value.AssetID, note);
+					console.log(res.messages);
+				} else {
+					const res = await snipe.hardware.checkin(value.AssetID, note, locationID);
+					console.log(res.messages);
+				}
 			}
 		});
 	}

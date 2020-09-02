@@ -21,10 +21,7 @@
   },
   "homepage": "https://github.com/stingalleman/snipe-bulk_checkin#readme",
   "dependencies": {
-    "boxen": "^4.2.0",
-    "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
-    "meow": "^7.1.1",
     "ora": "^5.0.0",
     "prompts": "^2.3.2",
     "snipe-it.js": "^1.2.0"
