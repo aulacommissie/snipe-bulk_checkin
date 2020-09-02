@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import dotenv from "dotenv"; dotenv.config(); // load creds from .env
+import configstore from "configstore"; const conf = new configstore("ginit"); // config
 import { Snipe } from "snipe-it.js";
 import prompts from "prompts";
 import chalk from "chalk";
+import figlet from "figlet";
 import ora from "ora";
 const spinner = ora({
 	color: "blue",
@@ -10,13 +11,50 @@ const spinner = ora({
 	text: "Loading..."
 });
 
-const snipe = new Snipe(process.env.SNIPE_URL, process.env.SNIPE_TOKEN);
-
 async function asyncFunction() {
+	console.clear();
+	console.log(
+		chalk.magenta(
+			figlet.textSync("Snipe\nBulk Checkin", { horizontalLayout: "default" })
+		)
+	);
+
+	if (!conf.get("snipeURL")) {
+		await prompts([
+			{
+				type: "text",
+				name: "snipeURL",
+				message: "What's the URL of your Snipe-IT instance?"
+			},
+			{
+				type: "password",
+				name: "snipeToken",
+				message: "What's your API token?"
+			}
+		]).then(async (res) => {
+			try {
+				conf.set("snipeURL", res.snipeURL);
+				conf.set("snipeToken", res.snipeToken);
+			} catch (err) {
+				console.log(`${chalk.red.italic.bold("Error")} - Can't save the credentials\nError: ${err}`);
+			}
+		});
+	}
+	const snipe = new Snipe(conf.get("snipeURL"), conf.get("snipeToken"));
+
 	spinner.start("Fetching resources from Snipe-IT...");
 
-	const assets = await snipe.hardware.get({ limit: 10000 });
-	const locations = await snipe.locations.get({ limit: 1000 });
+	let assets;
+	let locations;
+	try {
+		assets = await snipe.hardware.get({ limit: 10000 });
+		locations = await snipe.locations.get({ limit: 1000 });
+	} catch (err) {
+		spinner.stop();
+		console.log(`${chalk.red.italic.bold("Error")} - Can't fetch assets and/or locations.\n${chalk.bold.red("Make sure that you have the correct permissions, URL and API token!")}\nError: ${err}`);
+		conf.clear();
+		process.exit();
+	}
 	const assetArray: { title: string, value: any }[] = [];
 	const locationsArray: { title: string, value: any }[] = [];
 

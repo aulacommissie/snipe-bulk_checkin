@@ -1,6 +1,6 @@
 {
   "name": "snipe-bulk_checkin",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "snipe-bulk_checkin",
   "main": "dist/index.js",
   "scripts": {
@@ -13,16 +13,23 @@
     "type": "git",
     "url": "git+https://github.com/stingalleman/snipe-bulk_checkin.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "snipe-it",
+    "cli"
+  ],
+  "author": "Sting Alleman",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/stingalleman/snipe-bulk_checkin/issues"
   },
   "homepage": "https://github.com/stingalleman/snipe-bulk_checkin#readme",
   "dependencies": {
+    "@types/configstore": "^4.0.0",
+    "@types/figlet": "^1.2.0",
     "chalk": "^4.1.0",
+    "configstore": "^5.0.1",
     "dotenv": "^8.2.0",
+    "figlet": "^1.5.0",
     "ora": "^5.0.0",
     "prompts": "^2.3.2",
     "snipe-it.js": "^1.2.0"
